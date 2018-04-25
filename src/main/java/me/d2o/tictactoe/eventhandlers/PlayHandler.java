@@ -43,7 +43,7 @@ public class PlayHandler extends MachineEventHandler {
 	private String getInput(String player){
 		while (true){
 			try{
-				System.out.println(player+ " please input coordinates:");
+				System.out.println(player+ " please input coordinates {A1}:");
 				String inputstring = sc.nextLine().trim();
 				Pattern p = Pattern.compile("[ABCabc..][123..]");
 				Matcher m = p.matcher(inputstring);
