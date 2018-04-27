@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import me.d2o.tictactoe.config.Events;
-import me.d2o.statemachine.MachineEvent;
-import me.d2o.statemachine.MachineEventHandler;
+import me.d2o.statemachine.core.MachineEvent;
+import me.d2o.statemachine.eventhandler.MachineEventHandler;
 import me.d2o.tictactoe.persistence.Game;
 import me.d2o.tictactoe.persistence.GameRepository;
 
