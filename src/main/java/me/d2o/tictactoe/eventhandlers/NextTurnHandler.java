@@ -24,9 +24,9 @@ public class NextTurnHandler extends MachineEventHandler {
 	@Override
 	public void handleEvent(MachineEvent event) {
 		Game game = gameRepository.findOne(event.getMachineId());
-		char m = game.getState().getState().equals(States.CHECK_PLAYER1) ? 'x' : 'o';
+		char m = game.getState().equals(States.CHECK_PLAYER1) ? 'x' : 'o';
 		if (game.checkVictory(m)){
-			System.out.println(game.getState().getState() + " has won the game!");
+			System.out.println(game.getState() + " has won the game!");
 			game.printBoard();
 			event.setPropagate(Events.FINALIZE);
 		} else {

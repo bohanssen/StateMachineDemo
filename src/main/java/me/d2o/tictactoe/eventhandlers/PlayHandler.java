@@ -58,11 +58,11 @@ public class PlayHandler extends MachineEventHandler {
 	@Override
 	public void handleEvent(MachineEvent event) {
 		Game game = gameRepository.findOne(event.getMachineId());
-		System.out.println("\nIt is "+game.getState().getState()+"'s turn:");
+		System.out.println("\nIt is "+game.getState()+"'s turn:");
 		game.printBoard();
-		char m = game.getState().getState().equals(States.PLAYER1) ? 'x' : 'o';
+		char m = game.getState().equals(States.PLAYER1) ? 'x' : 'o';
 		while (true){
-			String[] cor = getInput(game.getState().getState()).split("");
+			String[] cor = getInput(game.getState()).split("");
 			if (game.pin(cor[0], cor[1], m)){
 				break;
 			}

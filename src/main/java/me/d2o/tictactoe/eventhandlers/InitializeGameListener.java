@@ -23,6 +23,6 @@ public class InitializeGameListener {
 	protected void startupGame(SpringApplicationEvent event) {
 		Game game = new Game();
 		gameRepository.save(game);
-		fsm.triggerTransition(game.getId(), Events.INITIALIZE);
+		fsm.triggerTransition(game.getMachineId(), Events.INITIALIZE);
 	}
 }

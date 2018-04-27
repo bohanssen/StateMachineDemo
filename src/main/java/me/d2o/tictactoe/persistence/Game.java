@@ -1,37 +1,18 @@
 package me.d2o.tictactoe.persistence;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 
 import me.d2o.tictactoe.config.States;
 import me.d2o.statemachine.StateMachine;
 
 @Entity
-public class Game {
-
-	@Id
-	private String id;
-
-	@OneToOne(cascade=CascadeType.ALL)
-	private StateMachine state;
+public class Game extends StateMachine{
 
 	private char[][] board = new char[][]{{'.','.','.'},{'.','.','.'},{'.','.','.'}};
-	
-	@PrePersist
-	public void init() {
-		this.state = new StateMachine(States.INITIAL);
-		this.id = state.getMachineId();
-	}
 
-	public String getId() {
-		return id;
-	}
-
-	public StateMachine getState() {
-		return state;
+	@Override
+	public String getInitialState() {
+		return States.INITIAL;
 	}
 
 	public void printBoard(){
@@ -55,6 +36,7 @@ public class Game {
 	private boolean checkUtil(boolean check, char m, char x1, char x2, char x3){
 		return (check || (m==x1 && m==x2 && m==x3));
 	}
+	
 	public boolean checkVictory(char m){
 		boolean victory = false;
 		
