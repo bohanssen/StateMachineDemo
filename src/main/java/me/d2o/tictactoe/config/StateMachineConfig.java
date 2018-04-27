@@ -15,8 +15,8 @@ import me.d2o.statemachine.StateMachineConfigurable;
 public class StateMachineConfig {
 
 	@Bean
-	public StateMachineConfigurable stateMachineConfigurable() {
-		StateMachineConfigurable fsm = new StateMachineConfigurable();
+	public StateMachineConfigurable stateMachineConfigurable() {	
+		StateMachineConfigurable fsm = new StateMachineConfigurable(Events.class,States.class);
 		
 		fsm.addTransition(Events.INITIALIZE, States.INITIAL, States.PLAYER1);
 		
