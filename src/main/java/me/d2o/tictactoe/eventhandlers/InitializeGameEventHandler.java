@@ -10,21 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 import me.d2o.tictactoe.config.Events;
 import me.d2o.statemachine.core.MachineEvent;
 import me.d2o.statemachine.eventhandler.MachineEventHandler;
-import me.d2o.tictactoe.persistence.Game;
-import me.d2o.tictactoe.persistence.GameRepository;
+import me.d2o.tictactoe.service.GameService;
 
 @Service
 @Transactional
 public class InitializeGameEventHandler extends MachineEventHandler {
 
 	@Autowired
-	private GameRepository gameRepository;
+	private GameService gameService;
 	
 	@Override
 	public void handleEvent(MachineEvent event) {
 		System.out.println("Welcome by a lame game called tic tac toe!");
-		Game game = gameRepository.findOne(event.getMachineId());
-		game.printBoard();
+		gameService.printBoard(event.getMachineId());
 		event.setPropagate(Events.PLAY);
 	}
 

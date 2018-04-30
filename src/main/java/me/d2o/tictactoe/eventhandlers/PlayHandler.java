@@ -3,7 +3,9 @@
  */
 package me.d2o.tictactoe.eventhandlers;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,51 +21,55 @@ import me.d2o.tictactoe.config.States;
 import me.d2o.statemachine.core.MachineEvent;
 import me.d2o.statemachine.eventhandler.MachineEventHandler;
 import me.d2o.tictactoe.persistence.Game;
-import me.d2o.tictactoe.persistence.GameRepository;
+import me.d2o.tictactoe.service.GameService;
 
 @Service
 @Transactional
 public class PlayHandler extends MachineEventHandler {
 
 	@Autowired
-	private GameRepository gameRepository;
-	
-	private Scanner sc;
+	private GameService gameService;
+
+	private InputStreamReader in;
+	private BufferedReader bufferRead;
 	
 	@PostConstruct
 	private void init(){
-		sc = new Scanner(System.in);
+		in = new InputStreamReader(System.in);
+		bufferRead = new BufferedReader(in);
 	}
 	
 	@PreDestroy
-	private void destroy(){
-		sc.close();
+	private void destroy() throws IOException{
+		bufferRead.close();
+		in.close();
 	}
 	
 	private String getInput(String player){
 		while (true){
 			try{
 				System.out.println(player+ " please input coordinates {A1}:");
-				String inputstring = sc.nextLine().trim();
+				String inputstring = bufferRead.readLine().trim();
 				Pattern p = Pattern.compile("[ABCabc..][123..]");
 				Matcher m = p.matcher(inputstring);
 				if (m.find()){
 					return inputstring;
 				} 
 			} catch(Exception ex){
-				//
+
 			}
 		}
 	}
+	
 	@Override
 	public void handleEvent(MachineEvent event) {
-		Game game = gameRepository.findOne(event.getMachineId());
+		Game game = gameService.get(event.getMachineId());
 		System.out.println("\nIt is "+game.getState()+"'s turn:");
-		game.printBoard();
+		gameService.printBoard(game.getMachineId());
 		char m = game.getState().equals(States.PLAYER1) ? 'x' : 'o';
 		while (true){
 			String[] cor = getInput(game.getState()).split("");
-			if (game.pin(cor[0], cor[1], m)){
+			if (gameService.setPin(game.getMachineId(), cor[0], cor[1], m)){
 				break;
 			}
 			System.out.println("Invalid coordinate!");

@@ -8,21 +8,25 @@ import org.springframework.stereotype.Component;
 import me.d2o.statemachine.core.StateMachineService;
 import me.d2o.tictactoe.config.Events;
 import me.d2o.tictactoe.persistence.Game;
-import me.d2o.tictactoe.persistence.GameRepository;
+import me.d2o.tictactoe.service.GameService;
 
 @Component
 public class InitializeGameListener {
 
 	@Autowired
-	private GameRepository gameRepository;
+	private GameService gameService;
 	
 	@Autowired
 	private StateMachineService fsm;
 	
+	private boolean init = true;
+	
 	@EventListener
 	protected void startupGame(SpringApplicationEvent event) {
-		Game game = new Game();
-		gameRepository.save(game);
-		fsm.triggerTransition(game.getMachineId(), Events.INITIALIZE);
+		if (init){
+			init = false;
+			Game game = gameService.initializeNew();
+			fsm.triggerTransition(game.getMachineId(), Events.INITIALIZE);
+		}
 	}
 }
