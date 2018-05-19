@@ -26,7 +26,7 @@ import me.d2o.tictactoe.service.GameService;
 @Service
 @Transactional
 public class PlayHandler extends MachineEventHandler {
-
+	
 	@Autowired
 	private GameService gameService;
 

@@ -1,4 +1,4 @@
-package me.d2o.tictactoe.eventhandlers;
+package me.d2o.tictactoe.contextstartup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.SpringApplicationEvent;
