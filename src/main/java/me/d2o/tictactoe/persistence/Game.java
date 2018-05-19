@@ -2,8 +2,8 @@ package me.d2o.tictactoe.persistence;
 
 import javax.persistence.Entity;
 
-import me.d2o.statemachine.core.StateMachine;
 import me.d2o.tictactoe.config.States;
+import me.d2o.statemachine.core.StateMachine;
 
 @Entity
 public class Game extends StateMachine{
