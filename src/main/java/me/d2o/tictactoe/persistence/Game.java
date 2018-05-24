@@ -10,6 +10,16 @@ public class Game extends StateMachine{
 
 	private char[][] board = new char[][]{{'.','.','.'},{'.','.','.'},{'.','.','.'}};
 
+	private int turn;
+	
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
 	@Override
 	public String getInitialState() {
 		return States.INITIAL;

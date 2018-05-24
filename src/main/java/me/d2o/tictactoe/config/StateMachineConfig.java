@@ -17,16 +17,10 @@ public class StateMachineConfig {
 	public StateMachineConfigurable stateMachineConfigurable() {	
 		StateMachineConfigurable fsm = new StateMachineConfigurable(Events.class,States.class);
 		
-		fsm.addTransition(Events.INITIALIZE, States.INITIAL, States.PLAYER1);
+		fsm.addTransition(Events.INITIALIZE, States.INITIAL, States.TURN);
+		fsm.addTransition(Events.PLAY, States.TURN, States.TURN);
+		fsm.addTransition(Events.FINALIZE, States.TURN, States.END);
 		
-		fsm.addTransition(Events.PLAY, States.PLAYER1, States.CHECK_PLAYER1);
-		fsm.addTransition(Events.PLAY, States.PLAYER2, States.CHECK_PLAYER2);
-		
-		fsm.addTransition(Events.NEXT_TURN, States.CHECK_PLAYER1, States.PLAYER2);
-		fsm.addTransition(Events.NEXT_TURN, States.CHECK_PLAYER2, States.PLAYER1);
-		
-		fsm.addTransition(Events.FINALIZE, States.PLAYER1, States.END);
-		fsm.addTransition(Events.FINALIZE, States.PLAYER2, States.END);
 		return fsm;
 	}
 
