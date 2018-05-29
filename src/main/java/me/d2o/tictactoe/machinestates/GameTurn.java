@@ -5,8 +5,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import me.d2o.statemachine.annotations.EnterMachineState;
+import me.d2o.statemachine.annotations.ExitMachineState;
 import me.d2o.statemachine.core.MachineEvent;
-import me.d2o.statemachine.eventhandler.MachineState;
 import me.d2o.tictactoe.config.Events;
 import me.d2o.tictactoe.config.States;
 import me.d2o.tictactoe.persistence.Game;
@@ -15,7 +16,7 @@ import me.d2o.tictactoe.service.InputService;
 
 @Component
 @Transactional
-public class GameTurn extends MachineState{
+public class GameTurn {
 
 	@Autowired
 	private GameService gameService;
@@ -23,7 +24,7 @@ public class GameTurn extends MachineState{
 	@Autowired
 	private InputService inp;
 	
-	@Override
+	@EnterMachineState(States.TURN)
 	public void enterState(MachineEvent event) {
 		Game game = gameService.get(event.getMachineId());
 		System.out.println("\nIt is Player "+(game.getTurn()+1)+"'s turn:");
@@ -39,11 +40,12 @@ public class GameTurn extends MachineState{
 		event.setPropagate(Events.PLAY);
 	}
 
-	@Override
+	@ExitMachineState(States.TURN)
 	public void exitState(MachineEvent event) {
 		Game game = gameService.get(event.getMachineId());
 		char m = game.getTurn() == 0 ? 'x' : 'o';
 		if (gameService.checkVictory(game.getMachineId(), m)){
+			System.out.println(event.getExitState() + " "+event.getEnterState());
 			if (event.getExitState().equals(event.getEnterState())){
 				event.setPropagate(Events.FINALIZE);
 				event.setTerminated(true);
@@ -52,11 +54,6 @@ public class GameTurn extends MachineState{
 			game.setTurn(game.getTurn() == 0 ? 1 : 0);
 			event.setPropagate(Events.PLAY);
 		}
-	}
-
-	@Override
-	public String state() {
-		return States.TURN;
 	}
 
 }
